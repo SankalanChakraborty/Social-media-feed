@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import UploadImage from "./UploadImage";
 
 const Page = ({
   loggedInUser,
@@ -26,6 +27,7 @@ const Page = ({
           Log Out
         </a>
       )}
+      <UploadImage />
     </div>
   );
 };

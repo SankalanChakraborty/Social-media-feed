@@ -16,6 +16,8 @@ const connectDB = require("./db/db");
 const userRouter = require("./routes/userRoutes");
 
 app.use("/users", userRouter);
+app.use("/uploads", express.static("uploads")); // serve static files
+app.use("/api/images", require("./routes/imageRoutes"));
 
 require("dotenv").config();
 
