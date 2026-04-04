@@ -7,17 +7,15 @@ const uploadImage = async (req, res) => {
   }
   const image = new imageModel({
     user: req.user.userId,
-    imageurl: req.file.path,
+    imageUrl: req.file.path,
     caption,
     size: req.file.size,
   });
   await image.save();
-  res
-    .status(201)
-    .json({
-      status: "OK",
-      message: `Image uploaded ${image._id} successfully`,
-    });
+  res.status(201).json({
+    status: "OK",
+    message: `Image uploaded ${image._id} successfully`,
+  });
 };
 
 const getUserImages = async (req, res) => {

@@ -23,7 +23,7 @@ const ProfilePage = ({
   return (
     <div className="profile-page">
       <Navbar loggedInUser={loggedInUser} handleLogout={handleLogout} />
-      {loggedInUser?.userName && <UploadImage />}
+      {loggedInUser?.userName && <UploadImage loggedInUser={loggedInUser} />}
     </div>
   );
 };
