@@ -1,17 +1,23 @@
 import { useState, useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import "./App.css";
-import Login from "./Pages/Login";
-import Page from "./Pages/Page";
 import Homepage from "./Pages/Homepage";
 import Registration from "./Pages/Registration";
+import Login from "./Pages/Login";
+import ProfilePage from "./Pages/ProfilePage";
+
+export interface User {
+  userName: string;
+  email: string;
+  role: "user" | "admin";
+}
 
 function App() {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [loggedInUser, setLoggedInUser] = useState(null);
+  const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
   const navigate = useNavigate();
 
   const getUserprofile = async () => {
@@ -125,7 +131,7 @@ function App() {
         <Route
           path="/profile"
           element={
-            <Page
+            <ProfilePage
               loggedInUser={loggedInUser}
               setLoggedInUser={setLoggedInUser}
             />

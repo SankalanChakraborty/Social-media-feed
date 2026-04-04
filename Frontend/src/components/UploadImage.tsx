@@ -1,4 +1,4 @@
-import Input from "../components/Input";
+import Input from "./Input";
 import "./UploadImage.css";
 import { useState } from "react";
 
