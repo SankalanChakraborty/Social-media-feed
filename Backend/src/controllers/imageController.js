@@ -14,7 +14,7 @@ const uploadImage = async (req, res) => {
   await image.save();
   res.status(201).json({
     status: "OK",
-    message: `Image uploaded ${image._id} successfully`,
+    message: `Image uploaded successfully`,
   });
 };
 

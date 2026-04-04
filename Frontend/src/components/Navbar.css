@@ -1,8 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap");
 
 .banner {
-  position: fixed;
-  top: 0;
   display: flex;
   justify-content: space-between;
   width: 100%;

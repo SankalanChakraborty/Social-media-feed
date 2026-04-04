@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UploadImage from "../components/UploadImage";
 import Navbar from "../components/Navbar";
 import type { User } from "../App";
 import "./ProfilePage.css";
+import Feed from "./Feed";
 
 const ProfilePage = ({
   loggedInUser,
@@ -14,9 +15,25 @@ const ProfilePage = ({
 }) => {
   const navigate = useNavigate();
   const [showUploadForm, setShowUploadForm] = useState(false);
+  const [images, setImages] = useState([]);
+
   const handdleUploadButtonClick = () => {
     setShowUploadForm((prev) => !prev);
   };
+
+  const fetchFeed = async () => {
+    const response = await fetch("http://localhost:8080/api/images/my-images", {
+      method: "GET",
+      credentials: "include",
+    });
+    const data = await response.json();
+    setImages(data.images);
+    console.log(data);
+  };
+
+  useEffect(() => {
+    fetchFeed();
+  }, []);
 
   const handleLogout = async () => {
     const response = await fetch("http://localhost:8080/users/logout", {
@@ -34,7 +51,7 @@ const ProfilePage = ({
         handdleUploadButtonClick={handdleUploadButtonClick}
         handleLogout={handleLogout}
       />
-      {/* {loggedInUser?.userName && <UploadImage loggedInUser={loggedInUser} />} */}
+
       {showUploadForm && (
         <div className="modal-overlay" onClick={() => setShowUploadForm(false)}>
           <div className="modal-box" onClick={(e) => e.stopPropagation()}>
@@ -46,11 +63,15 @@ const ProfilePage = ({
             </button>
             <UploadImage
               loggedInUser={loggedInUser}
-              onSuccess={() => setShowUploadForm(false)}
+              onSuccess={() => {
+                setShowUploadForm(false);
+                fetchFeed();
+              }}
             />
           </div>
         </div>
       )}
+      {images.length > 0 && <Feed images={images} />}
     </div>
   );
 };
