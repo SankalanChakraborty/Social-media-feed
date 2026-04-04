@@ -4,10 +4,11 @@ import { useState } from "react";
 import type { User } from "../App";
 
 interface UploadImageProps {
-  loggedInUser: User;
+  loggedInUser: User | null;
+  onSuccess?: () => void;
 }
 
-const UploadImage = ({ loggedInUser }: UploadImageProps) => {
+const UploadImage = ({ loggedInUser, onSuccess }: UploadImageProps) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [caption, setCaption] = useState("");
 
@@ -26,6 +27,7 @@ const UploadImage = ({ loggedInUser }: UploadImageProps) => {
     });
     const data = await response.json();
     console.log(data);
+    onSuccess?.();
   };
 
   const onChangehandler = (e: React.ChangeEvent<HTMLInputElement>) => {
