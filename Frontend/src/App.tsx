@@ -6,6 +6,13 @@ import Registration from "./Pages/Registration";
 import Login from "./Pages/Login";
 import ProfilePage from "./Pages/ProfilePage";
 import Toast from "./components/Toast";
+import {
+  API_BASE_URL,
+  LOGIN_ERROR_MESSAGE,
+  LOGIN_SUCCESS_MESSAGE,
+  TOAST_TYPE_ERROR,
+  TOAST_TYPE_SUCCESS,
+} from "./constants";
 
 export interface User {
   userName: string;
@@ -58,12 +65,12 @@ function App() {
       }, 2500);
       return () => clearTimeout(timer);
     }
-  }, [loginMessage]);
+  }, [loginMessage, registrationMessage]);
 
   //handle user registration
   const handleRegistration = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const response = await fetch("http://localhost:8080/users/register", {
+    const response = await fetch(`${API_BASE_URL}/users/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -80,11 +87,13 @@ function App() {
     if (data?.status === "Error") {
       setRegistrationMessage(data.message);
       setIsRegistrationSuccess(false);
-    } else {
+    }
+    if (
+      data?.status === "OK" &&
+      data?.message === "User registered successfully"
+    ) {
       setRegistrationMessage(data.message);
       setIsRegistrationSuccess(true);
-    }
-    if (data?.message === "User registered successfully") {
       setUserName("");
       setEmail("");
       setPassword("");
@@ -106,11 +115,11 @@ function App() {
 
     const data = await response.json();
     console.log(data);
-    if (data?.message === "Invalid email or password") {
-      setLoginMessage("Invalid email or password");
+    if (data?.message === LOGIN_ERROR_MESSAGE) {
+      setLoginMessage(LOGIN_ERROR_MESSAGE);
       setLoginSuccess(false);
     } else {
-      setLoginMessage("Login successful");
+      setLoginMessage(LOGIN_SUCCESS_MESSAGE);
       setLoginSuccess(true);
     }
     if (data?.token) {
@@ -123,9 +132,9 @@ function App() {
   return (
     <div className="app-container">
       {loginSuccess ? (
-        <Toast message={loginMessage} type={"success"} />
+        <Toast message={loginMessage} type={TOAST_TYPE_SUCCESS} />
       ) : !loginSuccess && loginMessage ? (
-        <Toast message={loginMessage} type={"error"} />
+        <Toast message={loginMessage} type={TOAST_TYPE_ERROR} />
       ) : null}
       <Routes>
         <Route path="/" element={<Homepage />} />
