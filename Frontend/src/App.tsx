@@ -5,6 +5,7 @@ import Homepage from "./Pages/Homepage";
 import Registration from "./Pages/Registration";
 import Login from "./Pages/Login";
 import ProfilePage from "./Pages/ProfilePage";
+import Toast from "./components/Toast";
 
 export interface User {
   userName: string;
@@ -18,6 +19,10 @@ function App() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
+  const [loginSuccess, setLoginSuccess] = useState(false);
+  const [loginMessage, setLoginMessage] = useState("");
+  const [isRegistrationSuccess, setIsRegistrationSuccess] = useState(false);
+  const [registrationMessage, setRegistrationMessage] = useState("");
   const navigate = useNavigate();
 
   const getUserprofile = async () => {
@@ -38,6 +43,23 @@ function App() {
     getUserprofile();
   }, []);
 
+  useEffect(() => {
+    if (loginMessage) {
+      const timer = setTimeout(() => {
+        setLoginMessage("");
+        setLoginSuccess(false);
+      }, 2500);
+      return () => clearTimeout(timer);
+    }
+    if (registrationMessage) {
+      const timer = setTimeout(() => {
+        setRegistrationMessage("");
+        setIsRegistrationSuccess(false);
+      }, 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [loginMessage]);
+
   //handle user registration
   const handleRegistration = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -55,6 +77,13 @@ function App() {
     });
     const data = await response.json();
     console.log(data);
+    if (data?.status === "Error") {
+      setRegistrationMessage(data.message);
+      setIsRegistrationSuccess(false);
+    } else {
+      setRegistrationMessage(data.message);
+      setIsRegistrationSuccess(true);
+    }
     if (data?.message === "User registered successfully") {
       setUserName("");
       setEmail("");
@@ -77,6 +106,13 @@ function App() {
 
     const data = await response.json();
     console.log(data);
+    if (data?.message === "Invalid email or password") {
+      setLoginMessage("Invalid email or password");
+      setLoginSuccess(false);
+    } else {
+      setLoginMessage("Login successful");
+      setLoginSuccess(true);
+    }
     if (data?.token) {
       await getUserprofile();
       navigate("/profile");
@@ -86,6 +122,11 @@ function App() {
   };
   return (
     <div className="app-container">
+      {loginSuccess ? (
+        <Toast message={loginMessage} type={"success"} />
+      ) : !loginSuccess && loginMessage ? (
+        <Toast message={loginMessage} type={"error"} />
+      ) : null}
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route

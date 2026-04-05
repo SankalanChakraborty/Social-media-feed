@@ -29,6 +29,9 @@ const ProfilePage = ({
     const data = await response.json();
     setImages(data.images);
     console.log(data);
+    if (data.message === "No token provided") {
+      navigate("/login");
+    }
   };
 
   useEffect(() => {

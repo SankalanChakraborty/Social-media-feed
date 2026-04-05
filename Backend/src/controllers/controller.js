@@ -12,14 +12,20 @@ const registerUser = async (req, res) => {
   const { userName, email, password, confirmPassword } = req.body;
   try {
     if (!userName || !email || !password || !confirmPassword) {
-      return res.status(400).json({ message: "All fields are required" });
+      return res
+        .status(400)
+        .json({ status: "Error", message: "All fields are required" });
     }
     if (password !== confirmPassword) {
-      return res.status(400).json({ message: "Passwords do not match" });
+      return res
+        .status(400)
+        .json({ status: "Error", message: "Passwords do not match" });
     }
     const existingUser = await userModel.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: "Email already in use" });
+      return res
+        .status(400)
+        .json({ status: "Error", message: "Email already in use" });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     await userModel.create({
