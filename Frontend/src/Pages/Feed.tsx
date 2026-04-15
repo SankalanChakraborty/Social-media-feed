@@ -1,5 +1,6 @@
 import ImageCard from "../components/ImageCard";
 import "./Feed.css";
+import { API_BASE_URL } from "../constants";
 
 interface Image {
   _id: string;
@@ -9,17 +10,22 @@ interface Image {
 }
 
 interface FeedProps {
-  images: Image[]; // ← array of Image objects, not strings
+  images: Image[];
+  onImageDeleted?: () => void; // Add callback for image deletion
 }
 
-const Feed = ({ images }: FeedProps) => {
+const Feed = ({ images, onImageDeleted }: FeedProps) => {
   return (
     <div className="feed">
       {images.map((image) => {
-        const src = `http://localhost:8080/${image.imageUrl.replace(/\\/g, "/")}`;
+        const src = `${API_BASE_URL}/${image.imageUrl.replace(/\\/g, "/")}`;
 
         return (
-          <ImageCard key={image._id} image={{ ...image, imageUrl: src }} />
+          <ImageCard
+            key={image._id}
+            image={{ ...image, imageUrl: src }}
+            onImageDeleted={onImageDeleted}
+          />
         );
       })}
     </div>

@@ -16,17 +16,32 @@
   border-radius: 4px;
 }
 
-.image-container svg {
+.image-container .pin-icon svg {
   position: absolute;
   top: -15px;
   left: 15px;
 }
 
 .image-container span {
-  display: block;
+  display: inline-block;
   font-size: 24px;
   font-family: "Dancing Script", cursive;
   font-optical-sizing: auto;
   font-weight: 600;
   font-style: normal;
+}
+
+.image-container .caption-and-delete {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.caption-and-delete svg {
+  transition: 0.3s all ease-in-out;
+}
+
+.caption-and-delete svg:hover {
+  transform: scale(1.2);
+  cursor: pointer;
 }

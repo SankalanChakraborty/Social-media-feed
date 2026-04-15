@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import type { User } from "../App";
 import "./ProfilePage.css";
 import Feed from "./Feed";
+import { API_BASE_URL } from "../constants";
 
 const ProfilePage = ({
   loggedInUser,
@@ -22,7 +23,7 @@ const ProfilePage = ({
   };
 
   const fetchFeed = async () => {
-    const response = await fetch("http://localhost:8080/api/images/my-images", {
+    const response = await fetch(`${API_BASE_URL}/api/images/my-images`, {
       method: "GET",
       credentials: "include",
     });
@@ -39,7 +40,7 @@ const ProfilePage = ({
   }, []);
 
   const handleLogout = async () => {
-    const response = await fetch("http://localhost:8080/users/logout", {
+    const response = await fetch(`${API_BASE_URL}/users/logout`, {
       method: "POST",
       credentials: "include",
     });
@@ -74,7 +75,11 @@ const ProfilePage = ({
           </div>
         </div>
       )}
-      {images.length > 0 && <Feed images={images} />}
+      {images.length > 0 ? (
+        <Feed images={images} onImageDeleted={fetchFeed} />
+      ) : (
+        <p className="no-images-message">No memories to cherish.</p>
+      )}
     </div>
   );
 };

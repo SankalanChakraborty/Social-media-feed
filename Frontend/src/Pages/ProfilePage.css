@@ -39,6 +39,17 @@
   color: #666;
 }
 
+.no-images-message {
+  font-size: 36px;
+  color: #555;
+  font-family: "Dancing Script", cursive;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+  text-align: center;
+  margin-top: 40px;
+}
+
 @keyframes fade-in {
   from {
     opacity: 0;

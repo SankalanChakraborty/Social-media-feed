@@ -30,13 +30,13 @@ const deleteImage = async (req, res) => {
   const { imageId } = req.params;
   const image = await imageModel.findById(imageId);
   if (!image) {
-    return res.status(404).json({ message: "Image not found" });
+    return res.status(404).json({ ok: false, message: "Image not found" });
   }
   if (image.user.toString() !== req.user.userId) {
-    return res.status(403).json({ message: "Unauthorized" });
+    return res.status(403).json({ ok: false, message: "Unauthorized" });
   }
   await imageModel.findByIdAndDelete(imageId);
-  res.status(200).json({ status: "OK", message: "Image deleted successfully" });
+  res.status(200).json({ ok: true, message: "Image deleted successfully" });
 };
 
 module.exports = {
