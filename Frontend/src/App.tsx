@@ -127,7 +127,7 @@ function App() {
         setPassword("");
       }
     } catch (error) {
-      console.log("Error logggin in, please try again later", error);
+      console.error("Error logging in, please try again later !", error);
     }
   };
   return (
