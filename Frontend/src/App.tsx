@@ -6,13 +6,7 @@ import Registration from "./Pages/Registration";
 import Login from "./Pages/Login";
 import ProfilePage from "./Pages/ProfilePage";
 import Toast from "./components/Toast";
-import {
-  API_BASE_URL,
-  LOGIN_ERROR_MESSAGE,
-  LOGIN_SUCCESS_MESSAGE,
-  TOAST_TYPE_ERROR,
-  TOAST_TYPE_SUCCESS,
-} from "./constants";
+import { API_BASE_URL, LOGIN, TOAST } from "./constants";
 
 export interface User {
   userName: string;
@@ -34,7 +28,7 @@ function App() {
 
   const getUserprofile = async () => {
     try {
-      const response = await fetch("http://localhost:8080/users/profile", {
+      const response = await fetch(`${API_BASE_URL}/users/profile`, {
         method: "GET",
         credentials: "include",
       });
@@ -104,37 +98,44 @@ function App() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const response = await fetch(`${API_BASE_URL}/users/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({ email, password }),
-    });
-
-    const data = await response.json();
-    console.log(data);
-    if (data?.message === LOGIN_ERROR_MESSAGE) {
-      setLoginMessage(LOGIN_ERROR_MESSAGE);
-      setLoginSuccess(false);
-    } else {
-      setLoginMessage(LOGIN_SUCCESS_MESSAGE);
-      setLoginSuccess(true);
-    }
-    if (data?.token) {
-      await getUserprofile();
-      navigate("/profile");
-      setEmail("");
-      setPassword("");
+    try {
+      const response = await fetch(`${API_BASE_URL}/users/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await response.json();
+      console.log(data);
+      if (data?.message === LOGIN.ERROR_MESSAGE) {
+        setLoginMessage(LOGIN.ERROR_MESSAGE);
+        setLoginSuccess(false);
+      }
+      if (data?.message === LOGIN.USER_NOT_FOUND) {
+        setLoginMessage(LOGIN.USER_NOT_FOUND);
+        setLoginSuccess(false);
+      } else {
+        setLoginMessage(LOGIN.SUCCESS_MESSAGE);
+        setLoginSuccess(true);
+      }
+      if (data?.token) {
+        await getUserprofile();
+        navigate("/profile");
+        setEmail("");
+        setPassword("");
+      }
+    } catch (error) {
+      console.log("Error logggin in, please try again later", error);
     }
   };
   return (
     <div className="app-container">
       {loginSuccess ? (
-        <Toast message={loginMessage} type={TOAST_TYPE_SUCCESS} />
+        <Toast message={loginMessage} type={TOAST.TYPE_SUCCESS} />
       ) : !loginSuccess && loginMessage ? (
-        <Toast message={loginMessage} type={TOAST_TYPE_ERROR} />
+        <Toast message={loginMessage} type={TOAST.TYPE_ERROR} />
       ) : null}
       <Routes>
         <Route path="/" element={<Homepage />} />

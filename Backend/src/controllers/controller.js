@@ -3,11 +3,6 @@ const bcrypt = require("bcrypt");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
-const getUserProfile = async (req, res) => {
-  const users = await userModel.find();
-  res.status(200).json(users);
-};
-
 const registerUser = async (req, res) => {
   const { userName, email, password, confirmPassword } = req.body;
   try {
@@ -83,7 +78,6 @@ const getProfile = async (req, res) => {
 };
 
 module.exports = {
-  getUserProfile,
   registerUser,
   userLogin,
   userLogout,

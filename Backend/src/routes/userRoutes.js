@@ -3,14 +3,11 @@ const userRouter = express.Router();
 const authMiddleware = require("../middlewares/authMiddleware");
 
 const {
-  getUserProfile,
   registerUser,
   userLogin,
   userLogout,
   getProfile,
 } = require("../controllers/controller");
-
-userRouter.get("/", getUserProfile);
 
 userRouter.post("/register", registerUser);
 
