@@ -11,10 +11,11 @@ interface Image {
 
 interface FeedProps {
   images: Image[];
-  onImageDeleted?: () => void; // Add callback for image deletion
+  onImageDeleted?: () => void;
+  removeImage?: (id: string, onImageDeleted?: () => void) => Promise<void>;
 }
 
-const Feed = ({ images, onImageDeleted }: FeedProps) => {
+const Feed = ({ images, onImageDeleted, removeImage }: FeedProps) => {
   return (
     <div className="feed">
       {images.map((image) => {
@@ -25,6 +26,7 @@ const Feed = ({ images, onImageDeleted }: FeedProps) => {
             key={image._id}
             image={{ ...image, imageUrl: src }}
             onImageDeleted={onImageDeleted}
+            removeImage={removeImage}
           />
         );
       })}

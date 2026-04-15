@@ -6,6 +6,7 @@ import type { User } from "../App";
 import "./ProfilePage.css";
 import Feed from "./Feed";
 import { API_BASE_URL } from "../constants";
+import Toast from "../components/Toast";
 
 const ProfilePage = ({
   loggedInUser,
@@ -17,7 +18,7 @@ const ProfilePage = ({
   const navigate = useNavigate();
   const [showUploadForm, setShowUploadForm] = useState(false);
   const [images, setImages] = useState([]);
-
+  const [isImageDeleted, setIsImageDeleted] = useState(false);
   const handdleUploadButtonClick = () => {
     setShowUploadForm((prev) => !prev);
   };
@@ -32,6 +33,27 @@ const ProfilePage = ({
     console.log(data);
     if (data.message === "No token provided") {
       navigate("/login");
+    }
+  };
+
+  const removeImage = async (id: string, onImageDeleted?: () => void) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/images/delete/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to delete image");
+      }
+      const data = await response.json();
+      console.log(data);
+      if (data.ok && onImageDeleted) {
+        onImageDeleted(); // Refresh the feed after successful deletion
+        setIsImageDeleted(true);
+        setTimeout(() => setIsImageDeleted(false), 2500); // Hide toast after 2.5 seconds
+      }
+    } catch (error) {
+      console.error("Error deleting image:", error);
     }
   };
 
@@ -75,8 +97,15 @@ const ProfilePage = ({
           </div>
         </div>
       )}
+      {isImageDeleted && (
+        <Toast message="Image deleted successfully!" type="error" />
+      )}
       {images.length > 0 ? (
-        <Feed images={images} onImageDeleted={fetchFeed} />
+        <Feed
+          images={images}
+          onImageDeleted={fetchFeed}
+          removeImage={removeImage}
+        />
       ) : (
         <p className="no-images-message">No memories to cherish.</p>
       )}
