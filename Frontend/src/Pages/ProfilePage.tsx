@@ -24,7 +24,7 @@ const ProfilePage = ({
   };
 
   const fetchFeed = async () => {
-    const response = await fetch(`${API_BASE_URL}/api/images/my-images`, {
+    const response = await fetch(`${API_BASE_URL.BASE}/api/images/my-images`, {
       method: "GET",
       credentials: "include",
     });
@@ -38,10 +38,13 @@ const ProfilePage = ({
 
   const removeImage = async (id: string, onImageDeleted?: () => void) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/images/delete/${id}`, {
-        method: "DELETE",
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${API_BASE_URL.BASE}/api/images/delete/${id}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        },
+      );
       if (!response.ok) {
         throw new Error("Failed to delete image");
       }
@@ -62,7 +65,7 @@ const ProfilePage = ({
   }, []);
 
   const handleLogout = async () => {
-    const response = await fetch(`${API_BASE_URL}/users/logout`, {
+    const response = await fetch(`${API_BASE_URL.BASE}/users/logout`, {
       method: "POST",
       credentials: "include",
     });

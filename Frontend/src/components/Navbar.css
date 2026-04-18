@@ -23,6 +23,22 @@
   gap: 30px;
 }
 
+.action-buttons .search-container {
+  position: relative;
+}
+
+.action-buttons .search-container input {
+  width: 200px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+}
+
+.action-buttons .search-container input:focus {
+  box-shadow: 0 0 8px 2px rgba(226, 231, 237, 0.8);
+}
+
 .action-buttons .upload-button {
   background: transparent;
   border: none;

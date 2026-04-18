@@ -19,7 +19,7 @@ const Feed = ({ images, onImageDeleted, removeImage }: FeedProps) => {
   return (
     <div className="feed">
       {images.map((image) => {
-        const src = `${API_BASE_URL}/${image.imageUrl.replace(/\\/g, "/")}`;
+        const src = `${API_BASE_URL.BASE}/${image.imageUrl.replace(/\\/g, "/")}`;
 
         return (
           <ImageCard

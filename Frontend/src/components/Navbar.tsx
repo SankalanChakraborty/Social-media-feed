@@ -21,6 +21,9 @@ const Navbar = ({
       )}
       {loggedInUser?.userName && (
         <div className="action-buttons">
+          <div className="search-container">
+            <input type="text" placeholder="Search memories..." />
+          </div>
           <button className="upload-button" onClick={handdleUploadButtonClick}>
             <svg
               xmlns="http://www.w3.org/2000/svg"

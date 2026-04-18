@@ -28,12 +28,12 @@ function App() {
 
   const getUserprofile = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/users/profile`, {
+      const response = await fetch(`${API_BASE_URL.BASE}/users/profile`, {
         method: "GET",
         credentials: "include",
       });
       const data = await response.json();
-      console.log(data);
+      console.log("Logged in user>>>>>>>>> ", data);
       setLoggedInUser(data);
     } catch (error) {
       console.error("Error fetching user profile:", error);
@@ -64,7 +64,7 @@ function App() {
   //handle user registration
   const handleRegistration = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const response = await fetch(`${API_BASE_URL}/users/register`, {
+    const response = await fetch(`${API_BASE_URL.BASE}/users/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -99,7 +99,7 @@ function App() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${API_BASE_URL}/users/login`, {
+      const response = await fetch(`${API_BASE_URL.BASE}/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
