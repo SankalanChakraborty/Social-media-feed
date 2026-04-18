@@ -69,6 +69,7 @@ const ProfilePage = ({
       method: "POST",
       credentials: "include",
     });
+    console.log("Log out response>>> ", response);
     setLoggedInUser(null);
     navigate("/login");
   };
@@ -106,6 +107,7 @@ const ProfilePage = ({
       {images.length > 0 ? (
         <Feed
           images={images}
+          loggedInUser={loggedInUser}
           onImageDeleted={fetchFeed}
           removeImage={removeImage}
         />

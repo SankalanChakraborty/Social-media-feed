@@ -1,6 +1,7 @@
 import ImageCard from "../components/ImageCard";
 import "./Feed.css";
 import { API_BASE_URL } from "../constants";
+import type { User } from "../App";
 
 interface Image {
   _id: string;
@@ -11,11 +12,17 @@ interface Image {
 
 interface FeedProps {
   images: Image[];
+  loggedInUser: User | null;
   onImageDeleted?: () => void;
   removeImage?: (id: string, onImageDeleted?: () => void) => Promise<void>;
 }
 
-const Feed = ({ images, onImageDeleted, removeImage }: FeedProps) => {
+const Feed = ({
+  images,
+  loggedInUser,
+  onImageDeleted,
+  removeImage,
+}: FeedProps) => {
   return (
     <div className="feed">
       {images.map((image) => {
@@ -25,6 +32,7 @@ const Feed = ({ images, onImageDeleted, removeImage }: FeedProps) => {
           <ImageCard
             key={image._id}
             image={{ ...image, imageUrl: src }}
+            loggedInUser={loggedInUser}
             onImageDeleted={onImageDeleted}
             removeImage={removeImage}
           />

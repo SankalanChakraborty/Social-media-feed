@@ -9,6 +9,7 @@ import Toast from "./components/Toast";
 import { API_BASE_URL, LOGIN, TOAST } from "./constants";
 
 export interface User {
+  _id: string;
   userName: string;
   email: string;
   role: "user" | "admin";
