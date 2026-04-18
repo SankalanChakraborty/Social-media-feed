@@ -57,10 +57,18 @@ const ProfilePage = ({
       }
       const data = await response.json();
       console.log(data);
-      if (data.ok && onImageDeleted) {
-        onImageDeleted(); // Refresh the feed after successful deletion
+      if (data.ok) {
+        // Immediately remove from UI
+        setImages((prevImages) => prevImages.filter((img) => img._id !== id));
+        // Refresh filtered list if it has items
+        if (filteredImageList.length > 0) {
+          setFilteredImageist((prevFiltered) =>
+            prevFiltered.filter((img) => img._id !== id),
+          );
+        }
+        // Show success toast
         setIsImageDeleted(true);
-        setTimeout(() => setIsImageDeleted(false), 2500); // Hide toast after 2.5 seconds
+        setTimeout(() => setIsImageDeleted(false), 2500);
       }
     } catch (error) {
       console.error("Error deleting image:", error);
