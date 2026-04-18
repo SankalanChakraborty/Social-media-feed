@@ -1,28 +1,50 @@
 import type { User } from "../App";
 import "./Navbar.css";
+import type { Image } from "../App";
+import { useState } from "react";
 
 interface NavbarProps {
   loggedInUser: User | null;
   handleLogout: () => void;
   handdleUploadButtonClick: () => void;
+  images: Image[];
+  setFilteredImageist: React.Dispatch<React.SetStateAction<Image[]>>;
 }
 
 const Navbar = ({
   loggedInUser,
   handleLogout,
   handdleUploadButtonClick,
+  images,
+  setFilteredImageist,
 }: NavbarProps) => {
+  const [search, setSearch] = useState("");
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearch(value);
+    const newList = images.filter((image) =>
+      image.caption.toLowerCase().includes(value),
+    );
+    setFilteredImageist(newList);
+  };
+
   return (
     <div className="banner">
       {loggedInUser?.userName ? (
-        <h1>Hello {loggedInUser.userName} welcome to your library</h1>
+        <h1>Hello {loggedInUser.userName}</h1>
       ) : (
         <h1>Please login to access your library</h1>
       )}
       {loggedInUser?.userName && (
         <div className="action-buttons">
           <div className="search-container">
-            <input type="text" placeholder="Search memories..." />
+            <input
+              type="text"
+              placeholder="Search memories..."
+              value={search}
+              onChange={handleSearch}
+            />
           </div>
           <button className="upload-button" onClick={handdleUploadButtonClick}>
             <svg

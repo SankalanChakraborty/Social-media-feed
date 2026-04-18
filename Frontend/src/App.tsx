@@ -14,6 +14,12 @@ export interface User {
   email: string;
   role: "user" | "admin";
 }
+export interface Image {
+  _id: string;
+  user: string;
+  imageUrl: string;
+  caption: string;
+}
 
 function App() {
   const [userName, setUserName] = useState("");
@@ -25,6 +31,8 @@ function App() {
   const [loginMessage, setLoginMessage] = useState("");
   const [isRegistrationSuccess, setIsRegistrationSuccess] = useState(false);
   const [registrationMessage, setRegistrationMessage] = useState("");
+  const [images, setImages] = useState<Image[]>([]);
+  const [filteredImageList, setFilteredImageist] = useState<Image[]>([]);
   const navigate = useNavigate();
 
   const getUserprofile = async () => {
@@ -186,6 +194,10 @@ function App() {
             <ProfilePage
               loggedInUser={loggedInUser}
               setLoggedInUser={setLoggedInUser}
+              images={images}
+              setImages={setImages}
+              filteredImageList={filteredImageList}
+              setFilteredImageist={setFilteredImageist}
             />
           }
         />

@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import UploadImage from "../components/UploadImage";
 import Navbar from "../components/Navbar";
-import type { User } from "../App";
+import type { Image, User } from "../App";
 import "./ProfilePage.css";
 import Feed from "./Feed";
 import { API_BASE_URL } from "../constants";
@@ -11,13 +11,20 @@ import Toast from "../components/Toast";
 const ProfilePage = ({
   loggedInUser,
   setLoggedInUser,
+  images,
+  setImages,
+  filteredImageList,
+  setFilteredImageist,
 }: {
   loggedInUser: User | null;
   setLoggedInUser: React.Dispatch<React.SetStateAction<User | null>>;
+  images: Image[];
+  setImages: React.Dispatch<React.SetStateAction<Image[]>>;
+  filteredImageList: Image[];
+  setFilteredImageist: React.Dispatch<React.SetStateAction<Image[]>>;
 }) => {
   const navigate = useNavigate();
   const [showUploadForm, setShowUploadForm] = useState(false);
-  const [images, setImages] = useState([]);
   const [isImageDeleted, setIsImageDeleted] = useState(false);
   const handdleUploadButtonClick = () => {
     setShowUploadForm((prev) => !prev);
@@ -80,6 +87,8 @@ const ProfilePage = ({
         loggedInUser={loggedInUser}
         handdleUploadButtonClick={handdleUploadButtonClick}
         handleLogout={handleLogout}
+        images={images}
+        setFilteredImageist={setFilteredImageist}
       />
 
       {showUploadForm && (
@@ -107,6 +116,7 @@ const ProfilePage = ({
       {images.length > 0 ? (
         <Feed
           images={images}
+          filteredImageList={filteredImageList}
           loggedInUser={loggedInUser}
           onImageDeleted={fetchFeed}
           removeImage={removeImage}
