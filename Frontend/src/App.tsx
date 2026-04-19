@@ -2,7 +2,8 @@ import { useState, useEffect, lazy, Suspense } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import "./App.css";
 import Homepage from "./Pages/Homepage";
-import Registration from "./Pages/Registration";
+
+const Registration = lazy(() => import("./Pages/Registration"));
 const Login = lazy(() => import("./Pages/Login"));
 import ProfilePage from "./Pages/ProfilePage";
 import Toast from "./components/Toast";
@@ -148,22 +149,26 @@ function App() {
       ) : null}
       <Routes>
         <Route path="/" element={<Homepage />} />
+
         <Route
           path="/register-user"
           element={
-            <Registration
-              userName={userName}
-              setUserName={setUserName}
-              email={email}
-              setEmail={setEmail}
-              password={password}
-              setPassword={setPassword}
-              confirmPassword={confirmPassword}
-              setConfirmPassword={setConfirmPassword}
-              handleRegistration={handleRegistration}
-            />
+            <Suspense fallback={<div>Loading...</div>}>
+              <Registration
+                userName={userName}
+                setUserName={setUserName}
+                email={email}
+                setEmail={setEmail}
+                password={password}
+                setPassword={setPassword}
+                confirmPassword={confirmPassword}
+                setConfirmPassword={setConfirmPassword}
+                handleRegistration={handleRegistration}
+              />
+            </Suspense>
           }
         />
+
         <Route
           path="/login"
           element={
