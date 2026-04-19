@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import "./App.css";
 import Homepage from "./Pages/Homepage";
 import Registration from "./Pages/Registration";
-import Login from "./Pages/Login";
+const Login = lazy(() => import("./Pages/Login"));
 import ProfilePage from "./Pages/ProfilePage";
 import Toast from "./components/Toast";
 import { API_BASE_URL, LOGIN, TOAST } from "./constants";
@@ -167,25 +167,29 @@ function App() {
         <Route
           path="/login"
           element={
-            <Login
-              handleLogin={handleLogin}
-              email={email}
-              setEmail={setEmail}
-              password={password}
-              setPassword={setPassword}
-            />
+            <Suspense fallback={<div>Loading...</div>}>
+              <Login
+                handleLogin={handleLogin}
+                email={email}
+                setEmail={setEmail}
+                password={password}
+                setPassword={setPassword}
+              />
+            </Suspense>
           }
         />
         <Route
           path="/logout"
           element={
-            <Login
-              handleLogin={handleLogin}
-              email={email}
-              setEmail={setEmail}
-              password={password}
-              setPassword={setPassword}
-            />
+            <Suspense fallback={<div>Loading...</div>}>
+              <Login
+                handleLogin={handleLogin}
+                email={email}
+                setEmail={setEmail}
+                password={password}
+                setPassword={setPassword}
+              />
+            </Suspense>
           }
         />
         <Route
